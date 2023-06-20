@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -19,7 +21,8 @@ public class InPutController extends Thread {
     private String massage;
     private static int ID = 1;
     DataBaseController dataBaseController = new DataBaseController();
-    public InPutController(Socket socket , String userName) throws SQLException, ClassNotFoundException {
+
+    public InPutController(Socket socket, String userName) throws SQLException, ClassNotFoundException {
         this.socket = socket;
         this.userName = userName;
     }
@@ -30,17 +33,25 @@ public class InPutController extends Thread {
             InputStreamReader reader = new InputStreamReader(this.socket.getInputStream());
             BufferedReader in = new BufferedReader(reader);
             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+            String sqlCommand = "SELECT * FROM ChatRoom";
+            Statement statement = dataBaseController.getConnection().prepareStatement(sqlCommand);
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
+            while (resultSet.next()) {
+                out.println(resultSet.getString(1) + ": " + resultSet.getString(2));
+            }
             massage = in.readLine();
             while (!massage.equals("exit")) {
                 for (Socket socketSearch : sockets) {
-                    if (socketSearch != socket)
-                        out.println(this.userName+": "+massage);
+                    if (socketSearch != socket) {
+                        PrintWriter outAll = new PrintWriter(socketSearch.getOutputStream(), true);
+                        outAll.println(this.userName + ": " + massage);
+                    }
                 }
-                dataBaseController.saveMassage(massage,userName);
+                dataBaseController.saveMassage(massage, userName);
 
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }

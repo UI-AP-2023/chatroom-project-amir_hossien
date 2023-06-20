@@ -32,4 +32,7 @@ public class DataBaseController {
         }
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
 }
