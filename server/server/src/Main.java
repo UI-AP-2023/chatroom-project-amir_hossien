@@ -15,11 +15,11 @@ public class Main {
         try {
             ServerSocket inPutServerSocket = new ServerSocket(6686);
             while (true) {
-                Socket inputSocket = inPutServerSocket.accept();
-                InPutController.sockets.add(inputSocket);
-                InputStreamReader reader = new InputStreamReader(inputSocket.getInputStream());
+                Socket Socket = inPutServerSocket.accept();
+                InPutController.sockets.add(Socket);
+                InputStreamReader reader = new InputStreamReader(Socket.getInputStream());
                 BufferedReader in = new BufferedReader(reader);
-                InPutController inPutController = new InPutController(inputSocket,in.readLine());
+                InPutController inPutController = new InPutController(Socket,in.readLine());
                 inPutController.start();
             }
         } catch (IOException e) {

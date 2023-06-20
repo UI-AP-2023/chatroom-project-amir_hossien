@@ -7,14 +7,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        Socket clientSocketOutput = new Socket("172.17.37.233",6686) ;
-        Socket clientSocketInput =  new Socket("172.17.37.233",6686) ;
-        InputController input  = new InputController(clientSocketOutput) ;
-        OutputController output = new OutputController(clientSocketInput) ;
+        Socket clientSocket = new Socket("localhost",6686);
+        OutputController output = new OutputController(clientSocket);
+        InputController input = new InputController(clientSocket);
         input.start();
         output.start();
-        Thread.currentThread().join();
-
     }
 }
 

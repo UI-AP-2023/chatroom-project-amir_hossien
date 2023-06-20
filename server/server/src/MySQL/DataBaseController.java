@@ -22,12 +22,12 @@ public class DataBaseController {
 
     public boolean saveMassage(String massage, String userName) {
         try {
-            final String SQLCommand = "INSERT INTO ChatRoom (ID , massage) VALUES ('" + userName + "','" + massage + "')";
+            final String SQLCommand = "INSERT INTO chat (ID , massage) VALUES ('" + userName + "','" + massage + "')";
             Statement commandState = connection.prepareStatement(SQLCommand);
             commandState.execute(SQLCommand);
             return true;
         } catch (SQLException e) {
-            System.out.println("SQL ERROR");
+            e.printStackTrace();
             return false;
         }
     }

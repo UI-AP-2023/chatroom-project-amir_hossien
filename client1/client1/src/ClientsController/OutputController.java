@@ -10,6 +10,7 @@ public class OutputController extends Thread{
         this.socket = socket ;
     }
     private Socket socket;
+    public static long currentTime;
     Scanner scanner = new Scanner(System.in) ;
     @Override
     public void run() {
@@ -17,10 +18,14 @@ public class OutputController extends Thread{
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             String massege="hossein";
             out.println(massege);
-            while (!massege.equals("exit") || massege.equals(null)){
+            while (!massege.equals("exit")){
                 massege = scanner.nextLine();
+                if (massege.equals("ping")){
+                    currentTime=System.currentTimeMillis();
+                }
                 out.println(massege);
             }
+            out.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

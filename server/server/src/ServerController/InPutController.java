@@ -33,15 +33,21 @@ public class InPutController extends Thread {
             InputStreamReader reader = new InputStreamReader(this.socket.getInputStream());
             BufferedReader in = new BufferedReader(reader);
             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-            String sqlCommand = "SELECT * FROM ChatRoom";
+            String sqlCommand = "SELECT * FROM chat";
             Statement statement = dataBaseController.getConnection().prepareStatement(sqlCommand);
             ResultSet resultSet = statement.executeQuery(sqlCommand);
             while (resultSet.next()) {
                 out.println(resultSet.getString(1) + ": " + resultSet.getString(2));
             }
-            massage = in.readLine();
+            massage = "0";
+            //System.out.println(massage);
             while (!massage.equals("exit")) {
+                massage = in.readLine();
+                if (massage.equals("ping")){
+                    out.println("connected");
+                }
                 for (Socket socketSearch : sockets) {
+                    //System.out.println(massage);
                     if (socketSearch != socket) {
                         PrintWriter outAll = new PrintWriter(socketSearch.getOutputStream(), true);
                         outAll.println(this.userName + ": " + massage);
@@ -50,6 +56,7 @@ public class InPutController extends Thread {
                 dataBaseController.saveMassage(massage, userName);
 
             }
+            in.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -18,9 +18,13 @@ public class InputController extends Thread{
             BufferedReader in = new BufferedReader(reader);
             String massage = "h";
             while (!massage.equals("exit")){
-                massage = in.readLine() ;
+                massage = in.readLine();
+                if (massage.equals("connected")){
+                    System.out.println(System.currentTimeMillis()-OutputController.currentTime);
+                }
                 System.out.println(massage);
             }
+            in.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
