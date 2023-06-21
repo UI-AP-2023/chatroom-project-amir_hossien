@@ -19,10 +19,10 @@ public class InputController extends Thread{
             String massage = "h";
             while (!massage.equals("exit")){
                 massage = in.readLine();
-                System.out.println(massage);
                 if (massage.equals("connected")){
-                    System.out.println((double) System.currentTimeMillis()-(double) OutputController.currentTime);
+                    System.out.println(System.currentTimeMillis()-OutputController.currentTime);
                 }
+                System.out.println(massage);
             }
             in.close();
         }catch (Exception e){
